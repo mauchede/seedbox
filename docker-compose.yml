@@ -1,0 +1,34 @@
+aria2:
+  image: mauchede/aria2
+  command: --log=- --enable-rpc --rpc-listen-all=true --rpc-secret=ThisTokenIsNotSoSecretChangeIt
+
+seedbox:
+  image: mauchede/seedbox:latest
+  stdin_open: true
+  tty: true
+  volumes:
+    - /etc/pam.d
+    - /etc/nginx/sites-enabled
+    - /etc/seedbox
+    - /usr/local/lib
+    - /srv/ftp
+
+vsftpd:
+  image: mauchede/vsftpd:3.0.2
+  command: -osecure_chroot_dir=/srv/ftp -oguest_enable=YES
+  ports:
+    - 21:21
+  volumes_from:
+    - seedbox
+
+webui-aria2:
+  image: mauchede/webui-aria2
+  links:
+    - aria2
+  environment:
+    - "RPC_HOST=http://aria2:6800"
+    - "RPC_SECRET=ThisTokenIsNotSoSecretChangeIt"
+  ports:
+    - 80:80
+  volumes_from:
+    - seedbox

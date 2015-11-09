@@ -1,0 +1,2 @@
+auth required /usr/local/lib/pam_pwdfile.so pwdfile /etc/seedbox/users
+account required /usr/local/lib/pam_permit.so
