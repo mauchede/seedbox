@@ -1,6 +1,8 @@
 aria2:
-  image: mauchede/aria2
-  command: --log=- --enable-rpc --rpc-listen-all=true --rpc-secret=ThisTokenIsNotSoSecretChangeIt
+  image: mauchede/aria2:1.18.8
+  command: --dir=/srv/ftp --log=- --enable-rpc --rpc-listen-all=true --rpc-secret=ThisTokenIsNotSoSecretChangeIt
+  volumes_from:
+    - seedbox
 
 seedbox:
   image: mauchede/seedbox:latest
@@ -8,14 +10,13 @@ seedbox:
   tty: true
   volumes:
     - /etc/pam.d
-    - /etc/nginx/sites-enabled
+    - /etc/nginx/conf.d
     - /etc/seedbox
-    - /usr/local/lib
     - /srv/ftp
 
 vsftpd:
   image: mauchede/vsftpd:3.0.2
-  command: -osecure_chroot_dir=/srv/ftp -oguest_enable=YES
+  command: -oanonymous_enable=NO -oguest_enable=YES -olocal_enable=YES -opasv_enable=NO -osecure_chroot_dir=/srv/ftp
   ports:
     - 21:21
   volumes_from:

@@ -1,11 +1,12 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
-usage() {
+fail() {
+    echo $1 >&2
     echo "$0 [USER]" >&2
     exit 1
 }
 
-[[ -z $1 ]] && echo "Argument USER is missing." >&2 && usage
+[[ -z $1 ]] && fail "Argument USER is missing."
 
 sed -i "/^$1:/ d" /etc/seedbox/users
