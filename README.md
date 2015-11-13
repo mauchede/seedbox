@@ -15,7 +15,7 @@ docker exec -ti seedbox_seedbox_1 adduser-seedbox test pwd
 docker exec -ti seedbox_seedbox_1 deluser-seedbox test
 ```
 
-__Note__: Don't forget to change the token used between `aria2` and `webui-aria2`.
+__Note__: Don't forget to change the token used between `aria2` and `webui-aria2`. You can use `bin/generate-secret`.
 
 ### Contributing
 
