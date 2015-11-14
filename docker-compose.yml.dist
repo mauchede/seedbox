@@ -1,6 +1,6 @@
 aria2:
+  command: --dir=/var/lib/ftp --enable-rpc --log=- --log-level=warn --quiet --rpc-listen-all=true --rpc-secret=ThisTokenIsNotSoSecretChangeIt
   image: mauchede/aria2:1.18.8
-  command: --enable-rpc --log=- --log-level=warn --quiet --rpc-listen-all=true --rpc-secret=ThisTokenIsNotSoSecretChangeIt
   ports:
     - 6800:6800
   volumes_from:
@@ -8,27 +8,29 @@ aria2:
 
 seedbox:
   image: mauchede/seedbox:latest
+  labels:
+    io.rancher.sidekicks: aria2, vsftpd, webui-aria2
   stdin_open: true
   tty: true
   volumes:
     - /etc/pam.d
     - /etc/nginx/conf.d
     - /etc/seedbox
-    - /srv/ftp
+    - /var/lib/ftp
 
 vsftpd:
+  command: -oanonymous_enable=NO -oguest_enable=YES -olocal_enable=YES -opasv_enable=NO -osecure_chroot_dir=/var/lib/ftp
   image: mauchede/vsftpd:3.0.2
-  command: -oanonymous_enable=NO -oguest_enable=YES -olocal_enable=YES -opasv_enable=NO -osecure_chroot_dir=/srv/ftp
   ports:
     - 21:21
   volumes_from:
     - seedbox
 
 webui-aria2:
-  image: mauchede/webui-aria2
   environment:
     - "RPC_HOST=127.0.0.1"
     - "RPC_SECRET=ThisTokenIsNotSoSecretChangeIt"
+  image: mauchede/webui-aria2
   ports:
     - 80:80
   volumes_from:
