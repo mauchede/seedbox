@@ -1,8 +1,15 @@
 aria2:
-  command: --dir=/var/lib/ftp --enable-rpc --log=- --log-level=warn --quiet --rpc-listen-all=true --rpc-secret=ThisTokenIsNotSoSecretChangeIt
+  command:
+    - "--dir=/var/lib/ftp"
+    - "--enable-rpc"
+    - "--log=-"
+    - "--log-level=warn"
+    - "--quiet"
+    - "--rpc-listen-all=true"
+    - "--rpc-secret=ThisTokenIsNotSoSecretChangeIt"
   image: mauchede/aria2:1.18.8
   ports:
-    - 6800:6800
+    - "6800:6800"
   volumes_from:
     - seedbox
 
@@ -19,10 +26,20 @@ seedbox:
     - /var/lib/ftp
 
 vsftpd:
-  command: -oanonymous_enable=NO -oguest_enable=YES -olocal_enable=YES -opasv_enable=NO -osecure_chroot_dir=/var/lib/ftp
+  command:
+    - "-oallow_writeable_chroot=YES"
+    - "-oanonymous_enable=NO"
+    - "-ochroot_local_user=YES"
+    - "-oguest_enable=YES"
+    - "-oguest_username=root"
+    - "-opasv_enable=NO"
+    - "-olocal_enable=YES"
+    - "-olocal_root=/var/lib/ftp"
+    - "-ovirtual_use_local_privs=YES"
+    - "-owrite_enable=YES"
   image: mauchede/vsftpd:3.0.2
   ports:
-    - 21:21
+    - "21:21"
   volumes_from:
     - seedbox
 
@@ -32,6 +49,6 @@ webui-aria2:
     - "RPC_SECRET=ThisTokenIsNotSoSecretChangeIt"
   image: mauchede/webui-aria2
   ports:
-    - 80:80
+    - "80:80"
   volumes_from:
     - seedbox

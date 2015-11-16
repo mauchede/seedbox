@@ -9,4 +9,5 @@ fail() {
 
 [[ -z $1 ]] && fail "Argument USER is missing."
 
+[[ ! -f /etc/seedbox/users ]] && touch /etc/seedbox/users
 sed -i "/^$1:/ d" /etc/seedbox/users
