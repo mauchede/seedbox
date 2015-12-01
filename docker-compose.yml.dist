@@ -1,6 +1,6 @@
 aria2:
   command:
-    - "--dir=/var/lib/ftp"
+    - "--dir=/var/lib/seedbox"
     - "--enable-rpc"
     - "--log=-"
     - "--log-level=warn"
@@ -11,19 +11,33 @@ aria2:
   ports:
     - "6800:6800"
   volumes_from:
-    - seedbox
+    - data
+
+cakebox:
+  environment:
+    - "CAKEBOX_ACCESS=/cakebox/access/"
+    - "CAKEBOX_USER=root"
+    - "CAKEBOX_ROOT=/var/lib/seedbox"
+    - "RIGHTS_CAN_DELETE=TRUE"
+  image: mauchede/cakebox:1.8.3
+  volumes_from:
+    - data
+
+data:
+  image: busybox:latest
+  volumes:
+    - /etc/seedbox
+    - /var/lib/seedbox
 
 seedbox:
   image: mauchede/seedbox:latest
-  labels:
-    io.rancher.sidekicks: aria2, vsftpd, webui-aria2
-  stdin_open: true
-  tty: true
-  volumes:
-    - /etc/pam.d
-    - /etc/nginx/conf.d
-    - /etc/seedbox
-    - /var/lib/ftp
+  links:
+    - cakebox
+    - webui-aria2
+  ports:
+    - "80:80"
+  volumes_from:
+    - data
 
 vsftpd:
   command:
@@ -34,21 +48,19 @@ vsftpd:
     - "-oguest_username=root"
     - "-opasv_enable=NO"
     - "-olocal_enable=YES"
-    - "-olocal_root=/var/lib/ftp"
+    - "-olocal_root=/var/lib/seedbox"
     - "-ovirtual_use_local_privs=YES"
     - "-owrite_enable=YES"
+  environment:
+    - "PWD_FILE=/etc/seedbox/users"
   image: mauchede/vsftpd:3.0.2
   ports:
     - "21:21"
   volumes_from:
-    - seedbox
+    - data
 
 webui-aria2:
   environment:
     - "RPC_HOST=127.0.0.1"
     - "RPC_SECRET=ThisTokenIsNotSoSecretChangeIt"
   image: mauchede/webui-aria2
-  ports:
-    - "80:80"
-  volumes_from:
-    - seedbox
