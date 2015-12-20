@@ -7,7 +7,7 @@ aria2:
     - "--quiet"
     - "--rpc-listen-all=true"
     - "--rpc-secret=ThisTokenIsNotSoSecretChangeIt"
-  image: mauchede/aria2:1.18.8
+  image: timonier/aria2:1.18.8
   ports:
     - "6800:6800"
   volumes_from:
@@ -19,7 +19,7 @@ cakebox:
     - "CAKEBOX_USER=root"
     - "CAKEBOX_ROOT=/var/lib/seedbox"
     - "RIGHTS_CAN_DELETE=TRUE"
-  image: mauchede/cakebox:1.8.3
+  image: timonier/cakebox:1.8.3
   volumes_from:
     - data
 
@@ -53,7 +53,7 @@ vsftpd:
     - "-owrite_enable=YES"
   environment:
     - "PWD_FILE=/etc/seedbox/users"
-  image: mauchede/vsftpd:3.0.2
+  image: timonier/vsftpd:3.0.2
   ports:
     - "21:21"
   volumes_from:
@@ -63,4 +63,4 @@ webui-aria2:
   environment:
     - "RPC_HOST=127.0.0.1"
     - "RPC_SECRET=ThisTokenIsNotSoSecretChangeIt"
-  image: mauchede/webui-aria2
+  image: timonier/webui-aria2

@@ -1,6 +1,6 @@
 ### Usage
 
-This image uses [mauchede/aria2](https://github.com/mauchede/aria2), [mauchede/cakebox](https://github.com/mauchede/cakebox), [mauchede/webui-aria2](https://github.com/mauchede/webui-aria2) and [mauchede/vsftpd](https://github.com/mauchede/vsftpd). An example of usage is provided with `docker-compose`:
+This image uses [timonier/aria2](https://github.com/timonier/aria2), [timonier/cakebox](https://github.com/timonier/cakebox), [timonier/webui-aria2](https://github.com/timonier/webui-aria2) and [timonier/vsftpd](https://github.com/timonier/vsftpd). An example of usage is provided with `docker-compose`:
 
 ```bash
 # Copy the default configuration
@@ -33,10 +33,9 @@ __Note__: Use the script `bin/build` to test your modifications locally.
 ### Links
 
 * [docker-compose](https://docs.docker.com/compose/)
-* [image "mauchede/aria2"](https://hub.docker.com/r/mauchede/aria2/)
-* [image "mauchede/cakebox"](https://hub.docker.com/r/mauchede/cakebox/)
 * [image "mauchede/seedbox"](https://hub.docker.com/r/mauchede/seedbox/)
-* [image "mauchede/vsftpd"](https://hub.docker.com/r/mauchede/vsftpd/)
-* [image "mauchede/webui-aria2"](https://hub.docker.com/r/mauchede/webui-aria2/)
-* [mauchede/aria2](https://hub.docker.com/r/mauchede/aria2/)
+* [image "timonier/aria2"](https://hub.docker.com/r/timonier/aria2/)
+* [image "timonier/cakebox"](https://hub.docker.com/r/timonier/cakebox/)
+* [image "timonier/vsftpd"](https://hub.docker.com/r/timonier/vsftpd/)
+* [image "timonier/webui-aria2"](https://hub.docker.com/r/timonier/webui-aria2/)
 * [seedboxes/pibox](https://github.com/seedboxes/pibox)
