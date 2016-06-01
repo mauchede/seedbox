@@ -5,8 +5,30 @@
 This image uses [timonier/aria2](https://github.com/timonier/aria2), [timonier/cakebox](https://github.com/timonier/cakebox), [timonier/webui-aria2](https://github.com/timonier/webui-aria2) and [timonier/vsftpd](https://github.com/timonier/vsftpd). An example of usage is provided with `docker-compose`:
 
 ```sh
-# Copy the default configuration
-cp docker-compose.yml.dist docker-compose.yml
+# Override docker-compose
+cat > docker-compose.override.yml << "EOF"
+version: '2'
+
+services:
+    aria2:
+        command:
+            - --dir=/var/lib/seedbox
+            - --enable-dht=false
+            - --enable-rpc
+            - --log=-
+            - --log-level=notice
+            - --max-concurrent-downloads=10
+            - --quiet
+            - --rpc-listen-all=true
+            - --rpc-secret=$RPC_SECRET
+            - --rpc-save-upload-metadata=false
+    webui-aria2:
+        environment:
+            - "RPC_SECRET=$RPC_SECRET"
+EOF
+
+# Prepare the project
+export RPC_SECRET="0fd9094d-76ca-4a76-be82-eaf513a1ccd2"
 
 # Start the project
 docker-compose up -d
