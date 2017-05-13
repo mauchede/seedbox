@@ -1,14 +1,23 @@
 #!/bin/sh
-set -e
+set -eu
+
+# Check environment
 
 fail() {
-    echo $1 >&2
-    echo "usage: $0 [USER] [PASSWORD]" >&2
+    echo "$1" >&2
+    echo "Usage: $(basename "$0") [USER] [PASSWORD]" >&2
     exit 1
 }
 
-[[ -z $1 ]] && fail "Argument USER is missing."
-[[ -z $2 ]] && fail "Argument PASSWORD is missing."
+if [ -z "$1" ] ; then
+    fail "Argument \"USER\" is missing."
+fi
 
-[[ ! -f /etc/seedbox/users ]] && touch /etc/seedbox/users
-htpasswd -db /etc/seedbox/users $1 $2
+if [ -z "$2" ] ; then
+    fail "Argument \"PASSWORD\" is missing."
+fi
+
+# Add user
+
+useradd --gid "$(id --group "${SEEDBOX_USER:-nobody}")" --home-dir /var/lib/seedbox --no-create-home --non-unique --uid "$(id --user "${SEEDBOX_USER:-nobody}")" "$1"
+echo "$1:$2" | chpasswd

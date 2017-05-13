@@ -1,13 +1,18 @@
 #!/bin/sh
-set -e
+set -eu
+
+# Check environment
 
 fail() {
-    echo $1 >&2
-    echo "$0 [USER]" >&2
+    echo "$1" 1>&2
+    echo "Usage: $(basename "$0") [LOGIN]" 1>&2
     exit 1
 }
 
-[[ -z $1 ]] && fail "Argument USER is missing."
+if [ -z "$1" ] ; then
+    fail "Argument \"LOGIN\" is missing."
+fi
 
-[[ ! -f /etc/seedbox/users ]] && touch /etc/seedbox/users
-sed -i "/^$1:/ d" /etc/seedbox/users
+# Remove user
+
+userdel "$1"

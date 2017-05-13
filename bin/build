@@ -1,4 +1,5 @@
 #!/bin/sh
-cd "`dirname "$0"`/../src"
+set -eux
+cd "$(dirname "$0")/../src"
 
-docker build -t ${IMAGE:-mauchede/seedbox}:${TAG:-latest} .
+docker build --tag "${IMAGE:-mauchede/seedbox}:${TAG:-latest}" .

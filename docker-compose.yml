@@ -1,70 +1,55 @@
-version: '2'
+version: "3"
 
 services:
     aria2:
         command:
-            - --dir=/var/lib/seedbox
-            - --enable-dht=false
-            - --enable-rpc
-            - --log=-
-            - --log-level=notice
-            - --max-concurrent-downloads=10
-            - --quiet
-            - --rpc-listen-all=true
-            - --rpc-secret=ThisTokenIsNotSoSecretChangeIt
-            - --rpc-save-upload-metadata=false
-        image: timonier/aria2:1.18.10
+            - "aria2c"
+            - "--dir=/var/lib/seedbox"
+            - "--enable-dht=false"
+            - "--enable-rpc"
+            - "--log=-"
+            - "--log-level=notice"
+            - "--max-concurrent-downloads=10"
+            - "--quiet"
+            - "--rpc-listen-all=true"
+            - "--rpc-secret=${RPC_SECRET}"
+            - "--rpc-save-upload-metadata=false"
+        environment:
+            - "USER=nobody"
+        image: timonier/aria2:latest
         ports:
-            - 6800:6800
-        user: nobody
+            - "6800:6800"
         volumes:
-            - files:/var/lib/seedbox:rw
+            - "data:/var/lib/seedbox:rw"
 
     cakebox:
         environment:
-            - CAKEBOX_ACCESS=/cakebox/access/
-            - CAKEBOX_ROOT=/var/lib/seedbox
-            - DIRECTORY_IGNORE=/(\\.aria2)$$/
-            - RIGHTS_CAN_DELETE=TRUE
-        image: timonier/cakebox:1.8.6
+            - "CAKEBOX_ACCESS=/cakebox/access/"
+            - "CAKEBOX_ROOT=/var/lib/seedbox"
+            - "CAKEBOX_USER=nobody"
+            - "DIRECTORY_IGNORE=/(\\.aria2)$$/"
+            - "RIGHTS_CAN_DELETE=TRUE"
+        image: timonier/cakebox:latest
         volumes:
-            - files:/var/lib/seedbox:rw
+            - "data:/var/lib/seedbox:rw"
 
     seedbox:
+        environment:
+            - "SEEDBOX_USER=nobody"
         image: mauchede/seedbox:latest
         ports:
-            - 80:80
+            - "22:22"
+            - "80:80"
         volumes:
-            - files:/var/lib/seedbox:rw
-            - users:/etc/seedbox:rw
-
-    vsftpd:
-        command:
-            - -oallow_writeable_chroot=YES
-            - -oanonymous_enable=NO
-            - -ochroot_local_user=YES
-            - -oguest_enable=YES
-            - -oguest_username=nobody
-            - -opasv_enable=NO
-            - -olocal_enable=YES
-            - -olocal_root=/var/lib/seedbox
-            - -ovirtual_use_local_privs=YES
-            - -owrite_enable=YES
-        environment:
-            - PWDFILE=/etc/seedbox/users
-        image: timonier/vsftpd:3.0.3
-        ports:
-            - 21:21
-        volumes:
-            - files:/var/lib/seedbox:rw
-            - users:/etc/seedbox:ro
+            - "config:/etc/seedbox:rw"
+            - "data:/var/lib/seedbox:rw"
 
     webui-aria2:
         environment:
-            - RPC_HOST=127.0.0.1
-            - RPC_SECRET=ThisTokenIsNotSoSecretChangeIt
-        image: timonier/webui-aria2
+            - "RPC_HOST=127.0.0.1"
+            - "RPC_SECRET=${RPC_SECRET}"
+        image: timonier/webui-aria2:latest
 
 volumes:
-    files: {}
-    users: {}
+    config: {}
+    data: {}

@@ -1,0 +1,9 @@
+#!/bin/sh
+set -eu
+
+mkdir --parents /etc/seedbox
+mkdir --parents /var/lib/seedbox
+
+if [ -n "$SEEDBOX_USER" ] ; then
+    chown --recursive "$(id --user "${SEEDBOX_USER:-nobody}"):$(id --group "${SEEDBOX_USER:-nobody}")" /var/lib/seedbox
+fi
