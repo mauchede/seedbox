@@ -1,11 +1,11 @@
 #!/bin/sh
-set -eu
+set -e
 
 # Check environment
 
 fail() {
-    echo "$1" 1>&2
-    echo "Usage: $(basename "$0") [LOGIN]" 1>&2
+    echo 1>&2 "$1"
+    echo 1>&2 "Usage: $(basename "$0") [LOGIN]"
     exit 1
 }
 

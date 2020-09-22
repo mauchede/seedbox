@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+
+if [ -z "$(ls --almost-all /etc/seedbox)" ] ; then
+    ssh-keygen -N "" -f /etc/seedbox/ssh_host_dsa_key -q -t dsa
+    ssh-keygen -N "" -f /etc/seedbox/ssh_host_ecdsa_key -q -t ecdsa
+    ssh-keygen -N "" -f /etc/seedbox/ssh_host_ed25519_key -q -t ed25519
+    ssh-keygen -N "" -f /etc/seedbox/ssh_host_rsa_key -q -t rsa
+fi

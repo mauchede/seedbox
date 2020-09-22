@@ -2,7 +2,9 @@
 
 Uploading and downloading files
 
-## Usage
+⚠️ This project is no longer maintained. ⚠️
+
+## Usage
 
 This image uses [timonier/aria2](https://github.com/timonier/aria2), [timonier/cakebox](https://github.com/timonier/cakebox) and [timonier/webui-aria2](https://github.com/timonier/webui-aria2). An example of usage is provided with `docker-compose`:
 
@@ -27,16 +29,6 @@ docker-compose exec seedbox deluser-seedbox test
 ```
 
 __Note__: Don't forget to change the token used between `aria2` and `webui-aria2`. Use `bin/generate-secret` if you want to generate a strong token.
-
-## Contributing
-
-1. Fork it.
-2. Create your branch: `git checkout -b my-new-feature`.
-3. Commit your changes: `git commit -am 'Add some feature'`.
-4. Push to the branch: `git push origin my-new-feature`.
-5. Submit a pull request.
-
-__Note__: Use the script `bin/build` to test your modifications locally.
 
 ## Links
 

@@ -3,6 +3,9 @@ server {
     server_name _;
     root /var/www;
 
+    access_log syslog:server=unix:/dev/log,facility=daemon;
+    error_log syslog:server=unix:/dev/log,facility=daemon;
+
     location / {
         auth_pam "Restricted";
         auth_pam_service_name "nginx";

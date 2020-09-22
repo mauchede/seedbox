@@ -1,9 +1,0 @@
-#!/bin/sh
-set -eu
-
-if [ -z "$(ls --almost-all /etc/seedbox)" ] ; then
-    ssh-keygen -A
-    mv /etc/ssh/ssh_host_* /etc/seedbox
-fi
-
-mkdir --parents /run/sshd

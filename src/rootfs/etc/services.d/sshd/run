@@ -1,3 +1,5 @@
 #!/bin/sh
 
-/usr/sbin/sshd -D
+s6-svwait /var/run/s6/services/syslog-stdout
+
+exec s6-setuidgid root /usr/sbin/sshd -D
